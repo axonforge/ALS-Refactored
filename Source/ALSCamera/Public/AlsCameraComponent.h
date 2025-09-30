@@ -77,6 +77,11 @@ protected:
 public:
 	UAlsCameraComponent();
 
+	#if WITH_EDITOR
+	// Asc change - added this data validation.
+	virtual EDataValidationResult IsDataValid(class FDataValidationContext& Context) const override;
+	#endif
+
 	virtual void PostLoad() override;
 
 	virtual void OnRegister() override;
@@ -125,6 +130,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "ALS|Camera")
 	void GetViewInfo(FMinimalViewInfo& ViewInfo) const;
+
+	// Asc change
+	void GetCameraTransform(FTransform& OutTransform) const;
 
 private:
 	void TickCamera(float DeltaTime, bool bAllowLag = true);

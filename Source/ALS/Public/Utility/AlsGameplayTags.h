@@ -11,6 +11,8 @@ namespace AlsViewModeTags
 namespace AlsLocomotionModeTags
 {
 	ALS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Grounded)
+	ALS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Swimming) // Asc change
+	ALS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(Flying) // Asc change
 	ALS_API UE_DECLARE_GAMEPLAY_TAG_EXTERN(InAir)
 }
 

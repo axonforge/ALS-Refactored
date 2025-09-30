@@ -478,9 +478,10 @@ public:
 
 	bool IsRollingAllowedToStart(const UAnimMontage* Montage) const;
 
-private:
+protected: // Asc change - make this protected.
 	void StartRolling(float PlayRate, float TargetYawAngle);
 
+private: // Asc change - moved this one line down.
 	UFUNCTION(Server, Reliable)
 	void ServerStartRolling(UAnimMontage* Montage, float PlayRate, float InitialYawAngle, float TargetYawAngle);
 
@@ -502,8 +503,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ALS|Character", Meta = (ReturnDisplayName = "Success"))
 	bool StartMantlingGrounded();
 
-private:
+	UFUNCTION(BlueprintCallable, Category = "ALS|Character", Meta = (ReturnDisplayName = "Success"))
 	bool StartMantlingInAir();
+private:
 
 	bool StartMantling(const FAlsMantlingTraceSettings& TraceSettings);
 

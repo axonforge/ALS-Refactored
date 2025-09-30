@@ -300,7 +300,8 @@ void AAlsCharacter::Tick(const float DeltaTime)
 	RefreshGroundedRotation(DeltaTime);
 	RefreshInAirRotation(DeltaTime);
 
-	StartMantlingInAir();
+	// Asc change - made this configurable based on settings.
+	if (Settings->Mantling.bAutoInAirMantling) StartMantlingInAir();
 	RefreshMantling();
 	RefreshRagdolling(DeltaTime);
 	RefreshRolling(DeltaTime);
@@ -490,6 +491,16 @@ void AAlsCharacter::OnMovementModeChanged(const EMovementMode PreviousMovementMo
 
 		case MOVE_Falling:
 			SetLocomotionMode(AlsLocomotionModeTags::InAir);
+			break;
+
+		// Asc change - this case
+		case MOVE_Swimming:
+			SetLocomotionMode(AlsLocomotionModeTags::Swimming);
+			break;
+
+		// Asc change - this case
+		case MOVE_Flying:
+			SetLocomotionMode(AlsLocomotionModeTags::Flying);
 			break;
 
 		default:
@@ -685,6 +696,14 @@ void AAlsCharacter::RefreshRotationMode()
 {
 	const auto bAiming{bDesiredAiming || DesiredRotationMode == AlsRotationModeTags::Aiming};
 	const auto bSprinting{AlsCharacterMovement->GetMaxAllowedGait() == AlsGaitTags::Sprinting};
+
+	// Asc change - next block
+	if (LocomotionMode == AlsLocomotionModeTags::Flying) {
+		if (bSprinting) SetRotationMode(AlsRotationModeTags::VelocityDirection);
+		else if (bAiming) SetRotationMode(AlsRotationModeTags::Aiming);
+		else SetRotationMode(DesiredRotationMode);
+		return;
+	}
 
 	if (ViewMode == AlsViewModeTags::FirstPerson)
 	{
@@ -950,7 +969,9 @@ void AAlsCharacter::OnGaitChanged_Implementation(const FGameplayTag& PreviousGai
 
 void AAlsCharacter::RefreshGait()
 {
-	if (LocomotionMode != AlsLocomotionModeTags::Grounded)
+	// Asc change - next 2 lines
+	const auto bIsGroundedOrFlying = LocomotionMode == AlsLocomotionModeTags::Grounded || LocomotionMode == AlsLocomotionModeTags::Flying;
+	if (!bIsGroundedOrFlying)
 	{
 		return;
 	}
@@ -1515,7 +1536,9 @@ void AAlsCharacter::CharacterMovement_OnPhysicsRotation(const float DeltaTime)
 
 void AAlsCharacter::RefreshGroundedRotation(const float DeltaTime)
 {
-	if (LocomotionAction.IsValid() || LocomotionMode != AlsLocomotionModeTags::Grounded)
+	// Asc change - next 2 lines
+	const auto bIsGroundedOrFlying = (LocomotionMode == AlsLocomotionModeTags::Grounded) || (LocomotionMode == AlsLocomotionModeTags::Flying);
+	if (LocomotionAction.IsValid() || !bIsGroundedOrFlying)
 	{
 		return;
 	}

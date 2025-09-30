@@ -7,8 +7,8 @@ public class ALSExtras : ModuleRules
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
 
-		// CppCompileWarningSettings.UnsafeTypeCastWarningLevel = WarningLevel.Warning;
-		CppCompileWarningSettings.NonInlinedGenCppWarningLevel = WarningLevel.Warning;
+        // CppCompileWarningSettings.UnsafeTypeCastWarningLevel = WarningLevel.Warning;
+        CppCompileWarningSettings.NonInlinedGenCppWarningLevel = WarningLevel.Warning;
 
 		PublicDependencyModuleNames.AddRange([
 			"Core", "CoreUObject", "Engine", "AIModule", "ALS"
